@@ -35,7 +35,7 @@ List the features here:
 
 ## Screenshots
 ![First Version - Application View](/Images/AppView1.0.png)
-![First Version - Edit Product View](/Images/AppView1.0.png)
+![First Version - Edit Product View](/Images/EditProductView1.0.png)
 
 
 ## Setup
