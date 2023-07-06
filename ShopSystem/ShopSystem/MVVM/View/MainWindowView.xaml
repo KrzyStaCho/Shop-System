@@ -1,0 +1,59 @@
+﻿<Window x:Class="ShopSystem.MVVM.View.MainWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:viewModel="clr-namespace:ShopSystem.MVVM.ViewModel"
+        xmlns:view="clr-namespace:ShopSystem.MVVM.View"
+        mc:Ignorable="d" Loaded="Window_Loaded" Icon="Images/ProductIcon.ico"
+        Title="Shop System" Height="800" Width="1200" Background="{StaticResource Midnight}" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="52"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Style="{StaticResource StandartBorder}">
+            <ToolBar>
+                <Button Tag="Plus" ToolTip="Add product" Style="{StaticResource Button50}" Command="{Binding AddProduct}"/>
+            </ToolBar>
+        </Border>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Style="{StaticResource SideMenuBorder}">
+                <StackPanel>
+                    <Border Style="{StaticResource LogoBorder}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="Images/Product.png" Width="50"/>
+                            <Label Content="{Binding LogoName}" Style="{StaticResource LogoLabel}"/>
+                        </StackPanel>
+                    </Border>
+                    <RadioButton IsChecked="True" Style="{StaticResource SideMenuButton}" Command="{Binding ShowProductTab}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="ProductHunt" Style="{StaticResource SideMenuButtonIcon}"/>
+                            <Label Content="Products" Style="{StaticResource SideMenuButtonLabel}"/>
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+            </Border>
+            <!-- Content -->
+            <ContentControl Grid.Column="1" Content="{Binding CurrentChildView}"/>
+        </Grid>
+        <Border Grid.Row="2" Style="{StaticResource StandartBorder}">
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <fa:ImageAwesome Icon="ClockOutline"/>
+                    <Label Name="ClockLabel" Content="00:00 Mon 00.00.0000" Foreground="{StaticResource Clouds}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Label Content="{Binding Version}" Foreground="{StaticResource Clouds}"/>
+                    <fa:ImageAwesome Icon="Circle" Height="10" Foreground="{Binding ColorStatus}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
