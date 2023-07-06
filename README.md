@@ -1,7 +1,7 @@
 # Shop System
 > Application that help with simple task in the shop job. (Manage Products, Documents, Receipts, Raports)
 
-![Current Version](https://img.shields.io/badge/version-alpha-brightgreen)
+![Current Version](https://img.shields.io/badge/version-1.0-brightgreen)
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -23,7 +23,7 @@
 
 ## Technologies Used
 - WPF
-- C#
+- .NET 6.0
 
 
 ## Features
@@ -34,10 +34,12 @@ List the features here:
 
 
 ## Screenshots
-<!-- ![Example screenshot](./img/screenshot.png) -->
+![First Version - Application View](./img/AppView1.0)
+![First Version - Edit Product View](./img/AppView1.0)
 
 
 ## Setup
+- Requirements: .NET 6.0
 
 
 ## Project Status

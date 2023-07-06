@@ -106,6 +106,7 @@ namespace ShopSystem.MVVM.ViewModel
         {
             if (!CheckParseDecimal("Netto ", NettoBox)) return;
             if (!CheckParseInt("Vat ", VatBox)) return;
+            ErrorBox = string.Empty;
 
             decimal netto = decimal.Parse(NettoBox);
             int vat = int.Parse(VatBox);
@@ -119,6 +120,7 @@ namespace ShopSystem.MVVM.ViewModel
             if (!CheckParseInt("Quantity", QuantityBox)) return;
             if (!CheckParseDecimal("Netto ", NettoBox)) return;
             if (!CheckParseInt("Vat ", VatBox)) return;
+            ErrorBox = string.Empty;
 
             int quantity = int.Parse(QuantityBox);
             decimal netto = decimal.Parse(NettoBox);
