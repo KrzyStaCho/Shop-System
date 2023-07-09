@@ -36,8 +36,11 @@ List the features here:
 ## Screenshots
 ![First Version - Application View](/Images/AppView1.0.png)
 ![First Version - Edit Product View](/Images/EditProductView1.0.png)
+<<<<<<< HEAD
 ![Second Version - Document Tab](/Images/DocumentsView2.0.png)
 ![Second Version - Show Document](/Images/ShowDocument2.0.png)
+=======
+>>>>>>> a3db7966902b52c5f3c41553fb5dbe111830ac8d
 
 
 ## Setup
