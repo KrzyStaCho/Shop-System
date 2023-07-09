@@ -31,7 +31,7 @@ namespace ShopSystem.MVVM.ViewModel
 
         public string Version
         {
-            get { return "Ver 1.0"; }
+            get { return "Ver 2.0"; }
         }
 
         public bool AppStatus
@@ -77,23 +77,52 @@ namespace ShopSystem.MVVM.ViewModel
             }
         }
 
+        public DocumentTabVM DocumentTabViewModel
+        {
+            get
+            {
+                BaseViewModel? viewModel = FindInstanceVM(typeof(DocumentTabVM).Name);
+                if (viewModel == null)
+                {
+                    viewModel = new DocumentTabVM();
+                    baseViewModels.Add(viewModel);
+                }
+                return viewModel as DocumentTabVM;
+            }
+        }
+
         #endregion
         #region Commands
 
         public ICommand ShowProductTab { get; }
+        public ICommand ShowDocumentTab { get; }
         public ICommand AddProduct { get; }
+        public ICommand AddDocument { get; }
 
         private void ExecuteShowProductTab(object parameter)
         {
-            if (CurrentChildView != null && CurrentChildView.GetType() == typeof(ProductTabView)) return;
+            if (CurrentChildView != null && CurrentChildView is ProductTabView) return;
             var view = new ProductTabView();
             view.DataContext = ProductTabViewModel;
+            CurrentChildView = view;
+        }
+
+        private void ExecuteShowDocumentTab(object parameter)
+        {
+            if (CurrentChildView != null && CurrentChildView is DocumentTabView) return;
+            var view = new DocumentTabView();
+            view.DataContext = DocumentTabViewModel;
             CurrentChildView = view;
         }
 
         private void ExecuteAddProduct(object parameter)
         {
             ProductTabViewModel.AddProduct.Execute(this);
+        }
+
+        private void ExecuteAddDocument(object parameter)
+        {
+            DocumentTabViewModel.AddDocument.Execute(this);
         }
 
         #endregion
@@ -114,7 +143,9 @@ namespace ShopSystem.MVVM.ViewModel
             AppStatus = true;
 
             ShowProductTab = new BaseCommand(ExecuteShowProductTab);
+            ShowDocumentTab = new BaseCommand(ExecuteShowDocumentTab);
             AddProduct = new BaseCommand(ExecuteAddProduct);
+            AddDocument = new BaseCommand(ExecuteAddDocument);
             ShowProductTab.Execute(this);
         }
     }

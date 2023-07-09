@@ -9,17 +9,16 @@ using System.Windows.Input;
 
 namespace ShopSystem.MVVM.ViewModel
 {
-    class ProductWindowVM : BaseViewModel
+    class SimpleProductWindowVM : BaseViewModel
     {
-        #region PrivateFields
+        #region Private Fields
 
-        public Product? editProduct;
+        public SimpleProduct SProduct;
+        private ShopSystemModel mainModel;
         public bool Status;
 
-        private string _idBox = string.Empty;
         private string _nameBox = string.Empty;
         private string _quantityBox = string.Empty;
-        private string _nettoBox = string.Empty;
         private string _vatBox = string.Empty;
         private string _bruttoBox = string.Empty;
         private string _errorBox = string.Empty;
@@ -29,26 +28,16 @@ namespace ShopSystem.MVVM.ViewModel
         private static readonly string NotNumberIntMessage = "isn't a number. Use only number.";
 
         #endregion
-        #region DataBinding
+        #region Data Binding
 
-        public string IdBox
+        public List<string> NameBox
         {
-            get { return _idBox; }
-            set
-            {
-                _idBox = value;
-                OnPropertyChanged(nameof(IdBox));
-            }
+            get { return mainModel.Products.Select(p => p.Name).ToList(); }
         }
-
-        public string NameBox
+        public string SelectedNameBox
         {
             get { return _nameBox; }
-            set
-            {
-                _nameBox = value;
-                OnPropertyChanged(nameof(NameBox));
-            }
+            set { _nameBox = value; }
         }
         public string QuantityBox
         {
@@ -57,15 +46,6 @@ namespace ShopSystem.MVVM.ViewModel
             {
                 _quantityBox = value;
                 OnPropertyChanged(nameof(QuantityBox));
-            }
-        }
-        public string NettoBox
-        {
-            get { return _nettoBox; }
-            set
-            {
-                _nettoBox = value;
-                OnPropertyChanged(nameof(NettoBox));
             }
         }
         public string VatBox
@@ -97,54 +77,28 @@ namespace ShopSystem.MVVM.ViewModel
         }
 
         #endregion
-        #region Command
+        #region Commands
 
-        public ICommand GetBrutto { get; }
         public ICommand Submit { get; }
 
-        private void ExecuteGetBrutto(object parameter)
+        public void ExecuteSubmit(object parameter)
         {
-            if (!CheckParseDecimal("Netto ", NettoBox)) return;
-            if (!CheckParseInt("Vat ", VatBox)) return;
-            ErrorBox = string.Empty;
-
-            decimal netto = decimal.Parse(NettoBox);
-            int vat = int.Parse(VatBox);
-
-            BruttoBox = Product.CalculateBrutto(netto, vat).ToString();
-        }
-
-        private void ExecuteSubmit(object parameter)
-        {
-            if (!CheckString("Name", NameBox)) return;
             if (!CheckParseInt("Quantity", QuantityBox)) return;
-            if (!CheckParseDecimal("Netto ", NettoBox)) return;
             if (!CheckParseInt("Vat ", VatBox)) return;
+            if (!CheckParseDecimal("Brutto ", BruttoBox)) return;
             ErrorBox = string.Empty;
 
             int quantity = int.Parse(QuantityBox);
-            decimal netto = decimal.Parse(NettoBox);
+            decimal brutto = decimal.Parse(BruttoBox);
             int vat = int.Parse(VatBox);
 
-            if (editProduct == null)
-                editProduct = new Product(NameBox, quantity, netto, vat);
-            else editProduct.ChangeData(NameBox, quantity, netto, vat);
+            SProduct = new SimpleProduct(SelectedNameBox, quantity, vat, brutto);
             Status = true;
             CloseCommand.Execute(this);
         }
 
         #endregion
         #region Functions
-
-        private bool CheckString(string prefix, string text)
-        {
-            if (IsEmpty(text))
-            {
-                ErrorBox = (prefix + " " + EmptyMessage);
-                return false;
-            }
-            return true;
-        }
 
         private bool CheckParseInt(string prefix, string text)
         {
@@ -184,29 +138,13 @@ namespace ShopSystem.MVVM.ViewModel
             return false;
         }
 
-        private void LoadProductPropertiesToFields()
-        {
-            IdBox = editProduct.Id.ToString();
-            NameBox = editProduct.Name.ToString();
-            QuantityBox = editProduct.Quantity.ToString();
-            NettoBox = editProduct.Netto.ToString();
-            VatBox = editProduct.Vat.ToString();
-            BruttoBox = editProduct.Brutto.ToString();
-        }
-
         #endregion
 
-        public ProductWindowVM(Product? product = null)
+        public SimpleProductWindowVM()
         {
-            editProduct = product;
-            if (editProduct != null)
-            {
-                LoadProductPropertiesToFields();
-            }
-            Status = false;
-
-            GetBrutto = new BaseCommand(ExecuteGetBrutto);
+            mainModel = ShopSystemModel.GetInstance();
             Submit = new BaseCommand(ExecuteSubmit);
+            Status = false;
         }
     }
 }

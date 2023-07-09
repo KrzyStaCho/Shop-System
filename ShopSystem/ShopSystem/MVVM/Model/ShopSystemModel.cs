@@ -1,6 +1,9 @@
 ﻿using ShopSystem.MVVM.Repository;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
 
 namespace ShopSystem.MVVM.Model
 {
@@ -11,8 +14,10 @@ namespace ShopSystem.MVVM.Model
         private static ShopSystemModel? instance;
         private AppRepo appRepo;
         private List<Product> products;
+        private List<Document> documents;
 
         public ReadOnlyCollection<Product> Products { get { return products.AsReadOnly(); } }
+        public ReadOnlyCollection<Document> Documents { get { return documents.AsReadOnly(); } }
 
         #endregion
         #region Functions
@@ -25,18 +30,31 @@ namespace ShopSystem.MVVM.Model
 
         private void PostLoadedWork()
         {
+            //Product
             Product.ResetLastId();
             products.ForEach(p => { p.AssignNewId(); p.CalculateNewBrutto(); });
+
+            //Documents
+            Document.ResetLastId();
+            documents.ForEach(d => { d.AssignNewId(); d.GetFullPrice(); });
         }
 
-        public void LoadProductsFromFile()
+        public void LoadDataFromFile()
         {
-            List<Product>? loadedList = appRepo.GetProducts();
-            if (loadedList == null) products = new List<Product>();
-            else products = loadedList;
+            //Product
+            List<Product>? loadedProducts = appRepo.GetProducts();
+            if (loadedProducts == null) products = new List<Product>();
+            else products = loadedProducts;
+
+            //Document
+            List<Document> loadedDocuments = appRepo.GetDocuments();
+            if (loadedDocuments == null)  documents = new List<Document>();
+            else documents = loadedDocuments;
 
             PostLoadedWork();
         }
+
+        #region Product Function
 
         public void AddProduct(Product product)
         {
@@ -57,11 +75,48 @@ namespace ShopSystem.MVVM.Model
         }
 
         #endregion
+        #region Document Function
+
+        public void AddDocument(Document document)
+        {
+            documents.Add(document);
+            DoDocument(document);
+            appRepo.SetDocuments(documents);
+        }
+
+        public void EditDocument(Document document)
+        {
+            documents[document.Id] = document;
+            appRepo.SetDocuments(documents);
+        }
+
+        public void DeleteDocument(Document document)
+        {
+            documents.Remove(document);
+            appRepo.SetDocuments(documents);
+        }
+
+        public void DoDocument(Document document)
+        {
+            foreach (SimpleProduct element in document.Products)
+            {
+                var product = products.FirstOrDefault(p => p.Name == element.Name);
+                if (product != null)
+                {
+                    product.AddQuantity(element.Quantity);
+                }
+            }
+            appRepo.SetProducts(products);
+        }
+
+        #endregion
+
+        #endregion
 
         private ShopSystemModel()
         {
             appRepo = new AppRepo();
-            LoadProductsFromFile();
+            LoadDataFromFile();
         }
     }
 }

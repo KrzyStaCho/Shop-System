@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="ShopSystem.MVVM.View.ProductTabView"
+﻿<UserControl x:Class="ShopSystem.MVVM.View.DocumentTabView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ShopSystem.MVVM.View"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
-             mc:Ignorable="d"
+             mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -15,21 +15,22 @@
         <Border Grid.Row="0" Style="{StaticResource StandartBorder}">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button Tag="ArrowCircleOutlineDown" ToolTip="Refresh" Style="{StaticResource Button50}" Command="{Binding ReloadList}"/>
+                    <Button Tag="ArrowCircleOutlineDown" ToolTip="Refresh" Style="{StaticResource Button50}" Command="{Binding Refresh}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Tag="Plus" ToolTip="Add product" Style="{StaticResource Button50}" Command="{Binding AddProduct}"/>
+                    <Button Tag="Plus" ToolTip="Add document" Style="{StaticResource Button50}" Command="{Binding AddDocument}"/>
                 </StackPanel>
             </Grid>
         </Border>
         <ScrollViewer Grid.Row="1">
-            <DataGrid ItemsSource="{Binding Products}">
+            <DataGrid ItemsSource="{Binding Documents}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Width="auto" Binding="{Binding Id}"/>
-                    <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Quantity" Width="*" Binding="{Binding Quantity}"/>
-                    <DataGridTextColumn Header="Price" Width="*" Binding="{Binding Brutto, StringFormat=C}"/>
-                    <DataGridTextColumn Header="Vat %" Width="*" Binding="{Binding Vat}"/>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="Date" Width="*" Binding="{Binding Date}"/>
+                    <DataGridTextColumn Header="Seller" Width="*" Binding="{Binding Seller.Name}"/>
+                    <DataGridTextColumn Header="Buyer" Width="*" Binding="{Binding Buyer.Name}"/>
+                    <DataGridTextColumn Header="Products" Width="*" Binding="{Binding Products.Count}"/>
+                    <DataGridTextColumn Header="Price" Width="*" Binding="{Binding Price}"/>
                     <DataGridTemplateColumn Header="Confirm" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -38,8 +39,8 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0" Margin="5, 0" Content="Select" Command="{Binding DataContext.EditProduct, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}"/>
-                                    <Button Grid.Column="1" Margin="5, 0" Content="Delete" Command="{Binding DataContext.DeleteProduct, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}"/>
+                                    <Button Grid.Column="0" Margin="5, 0" Content="Delete" Command="{Binding DataContext.DeleteDocument, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"/>
+                                    <Button Grid.Column="1" Margin="5, 0" Content="Show" Command="{Binding DataContext.ShowDocument, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

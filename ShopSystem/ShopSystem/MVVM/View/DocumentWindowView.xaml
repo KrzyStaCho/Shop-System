@@ -1,0 +1,112 @@
+﻿<Window x:Class="ShopSystem.MVVM.View.DocumentWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShopSystem.MVVM.View"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        mc:Ignorable="d" Icon="Images/ProductIcon.ico"
+        Title="Document Window" Height="1000" Width="800" Background="{StaticResource Asbestos}" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Style="{StaticResource DialogWindowBorder}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Column="0" Grid.Row="0">
+                    <Border Style="{StaticResource DocumentBorder}">
+                        <StackPanel>
+                            <Label Content="City" Style="{StaticResource DialogFieldLabel}"/>
+                            <TextBox Style="{StaticResource DocumentTextBox}" IsEnabled="{Binding IsEnabled}" Text="{Binding City, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource DocumentBorder}">
+                        <StackPanel>
+                            <Label Content="Seller Info" Style="{StaticResource DialogFieldLabel}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Column="0" Grid.Row="0" Content="Company Name:" Style="{StaticResource DocumentFieldLabel}"/>
+                                <TextBox Grid.Column="1" Grid.Row="0" Style="{StaticResource DocumentTextBox}" IsEnabled="{Binding IsEnabled}" Text="{Binding SellerName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                <Label Grid.Column="0" Grid.Row="1" Content="Company NIP:" Style="{StaticResource DocumentFieldLabel}"/>
+                                <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource DocumentTextBox}" IsEnabled="{Binding IsEnabled}" Text="{Binding SellerNip, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Grid.Row="0">
+                    <Border Style="{StaticResource DocumentBorder}">
+                        <StackPanel>
+                            <Label Content="Date" Style="{StaticResource DialogFieldLabel}"/>
+                            <TextBox Style="{StaticResource DocumentTextBox}" IsEnabled="{Binding IsEnabled}" Text="{Binding Date, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource DocumentBorder}">
+                        <StackPanel>
+                            <Label Content="Buyer Info" Style="{StaticResource DialogFieldLabel}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Column="0" Grid.Row="0" Content="Company Name:" Style="{StaticResource DocumentFieldLabel}"/>
+                                <TextBox Grid.Column="1" Grid.Row="0" Style="{StaticResource DocumentTextBox}" IsEnabled="{Binding IsEnabled}" Text="{Binding BuyerName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                <Label Grid.Column="0" Grid.Row="1" Content="Company NIP:" Style="{StaticResource DocumentFieldLabel}"/>
+                                <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource DocumentTextBox}" IsEnabled="{Binding IsEnabled}" Text="{Binding BuyerNip, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+                <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                    <DataGrid ItemsSource="{Binding Products}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Quantity" Width="*" Binding="{Binding Quantity}"/>
+                            <DataGridTextColumn Header="Vat" Width="*" Binding="{Binding Vat}"/>
+                            <DataGridTextColumn Header="Brutto" Width="*" Binding="{Binding Brutto, StringFormat=C}"/>
+                            <DataGridTemplateColumn Header="Option" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Margin="5, 0" Content="Delete" Command="{Binding DataContext.DeleteProduct, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>
+                <Grid Grid.Column="0" Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Content="Price:" Style="{StaticResource DocumentFieldLabel}"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" IsEnabled="False" Style="{StaticResource DocumentTextBox}" Text="{Binding Price}"/>
+                </Grid>
+                <Button Grid.Column="1" Grid.Row="2" Content="Add product" Style="{StaticResource OptionButtonDialogWindow}" Command="{Binding AddProduct}"/>
+                <TextBlock Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" FontWeight="Medium" Text="{Binding ErrorBox}" Style="{StaticResource ErrorDialogFieldLabel}"/>
+            </Grid>
+        </Border>
+        <Button Grid.Row="1" Style="{StaticResource ConfirmButtonDialogWindow}" Command="{Binding Submit}"/>
+    </Grid>
+</Window>

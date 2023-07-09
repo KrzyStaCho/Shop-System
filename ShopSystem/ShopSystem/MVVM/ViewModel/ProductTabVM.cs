@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ShopSystem.MVVM.ViewModel
@@ -35,7 +36,7 @@ namespace ShopSystem.MVVM.ViewModel
 
         private void ExecuteReloadList(object parameter)
         {
-            mainModel.LoadProductsFromFile();
+            mainModel.LoadDataFromFile();
             OnPropertyChanged(nameof(Products));
         }
 
@@ -72,6 +73,9 @@ namespace ShopSystem.MVVM.ViewModel
 
         private void ExecuteDeleteProduct(object parameter)
         {
+            MessageBoxResult result = MessageBox.Show("Do you want to delete product?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result != MessageBoxResult.Yes) { return; }
+
             Product product = parameter as Product;
             mainModel.DeleteProduct(product);
             OnPropertyChanged(nameof(Products));
