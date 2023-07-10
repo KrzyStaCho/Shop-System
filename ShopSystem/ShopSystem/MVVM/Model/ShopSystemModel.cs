@@ -13,11 +13,15 @@ namespace ShopSystem.MVVM.Model
 
         private static ShopSystemModel? instance;
         private AppRepo appRepo;
+        private Account setAccount;
         private List<Product> products;
         private List<Document> documents;
+        private List<Account> accounts;
 
         public ReadOnlyCollection<Product> Products { get { return products.AsReadOnly(); } }
         public ReadOnlyCollection<Document> Documents { get { return documents.AsReadOnly(); } }
+        public ReadOnlyCollection<Account> Accounts { get { return accounts.AsReadOnly(); } }
+        public AccountType SetAccountType { get { return setAccount.Type; } }
 
         #endregion
         #region Functions
@@ -37,6 +41,10 @@ namespace ShopSystem.MVVM.Model
             //Documents
             Document.ResetLastId();
             documents.ForEach(d => { d.AssignNewId(); d.GetFullPrice(); });
+
+            //Accounts
+            Account.ResetLastId();
+            accounts.ForEach(a => { a.AssignNewId(); });
         }
 
         public void LoadDataFromFile()
@@ -50,6 +58,11 @@ namespace ShopSystem.MVVM.Model
             List<Document> loadedDocuments = appRepo.GetDocuments();
             if (loadedDocuments == null)  documents = new List<Document>();
             else documents = loadedDocuments;
+
+            //Account
+            List<Account> loadedAccounts = appRepo.GetAccounts();
+            if (loadedAccounts == null) accounts = new List<Account>();
+            else accounts = loadedAccounts;
 
             PostLoadedWork();
         }
@@ -107,6 +120,38 @@ namespace ShopSystem.MVVM.Model
                 }
             }
             appRepo.SetProducts(products);
+        }
+
+        #endregion
+        #region Account Function
+
+        public void AddAccount(Account account)
+        {
+            accounts.Add(account);
+            appRepo.SetAccounts(accounts);
+        }
+
+        public void EditAccount(Account account)
+        {
+            try
+            {
+                accounts[account.Id] = account;
+                appRepo.SetAccounts(accounts);
+            } catch (Exception e)
+            {
+                MessageBox.Show("Cos");
+            }
+        }
+
+        public void DeleteAccount(Account account)
+        {
+            accounts.Remove(account);
+            appRepo.SetAccounts(accounts);
+        }
+
+        public void SetAccount(Account account)
+        {
+            setAccount = account;
         }
 
         #endregion

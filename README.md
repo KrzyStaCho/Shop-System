@@ -38,6 +38,7 @@ List the features here:
 ![First Version - Edit Product View](/Images/EditProductView1.0.png)
 ![Second Version - Document Tab](/Images/DocumentsView2.0.png)
 ![Second Version - Show Document](/Images/ShowDocument2.0.png)
+![Third Version - Add Account](/Images/AddAccount3.0.png)
 
 ## Setup
 - Requirements: .NET 6.0

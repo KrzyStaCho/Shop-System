@@ -16,8 +16,10 @@
         </Grid.RowDefinitions>
         <Border Grid.Row="0" Style="{StaticResource StandartBorder}">
             <ToolBar>
-                <Button Tag="Book" ToolTip="Add product" Style="{StaticResource Button50}" Command="{Binding AddProduct}"/>
-                <Button Tag="Briefcase" ToolTip="Add document" Style="{StaticResource Button50}" Command="{Binding AddDocument}"/>
+                <Button Tag="Book" ToolTip="Add product" Style="{StaticResource Button50}" Command="{Binding AddProduct}" IsEnabled="{Binding IsEnabled}"/>
+                <Button Tag="Briefcase" ToolTip="Add document" Style="{StaticResource Button50}" Command="{Binding AddDocument}" IsEnabled="{Binding IsEnabled}"/>
+                <Button Tag="ArrowCircleOutlineRight" ToolTip="Add account" Style="{StaticResource Button50}" Command="{Binding AddAccount}" IsEnabled="{Binding IsEnabled}"/>
+                <Button Tag="ArrowCircleOutlineUp" ToolTip="LogOut" Style="{StaticResource Button50}" Command="{Binding LogOut}" IsEnabled="{Binding IsEnabled}"/>
             </ToolBar>
         </Border>
         <Grid Grid.Row="1">
@@ -33,16 +35,23 @@
                             <Label Content="{Binding LogoName}" Style="{StaticResource LogoLabel}"/>
                         </StackPanel>
                     </Border>
-                    <RadioButton IsChecked="True" Style="{StaticResource SideMenuButton}" Command="{Binding ShowProductTab}">
+                    <Border Style="{StaticResource DialogWindowBorder}"/>
+                    <RadioButton IsChecked="True" Style="{StaticResource SideMenuButton}" Command="{Binding ShowProductTab}" IsEnabled="{Binding IsEnabled}">
                         <StackPanel Orientation="Horizontal">
                             <fa:ImageAwesome Icon="Book" Style="{StaticResource SideMenuButtonIcon}"/>
                             <Label Content="Products" Style="{StaticResource SideMenuButtonLabel}"/>
                         </StackPanel>
                     </RadioButton>
-                    <RadioButton Style="{StaticResource SideMenuButton}" Command="{Binding ShowDocumentTab}">
+                    <RadioButton Style="{StaticResource SideMenuButton}" Command="{Binding ShowDocumentTab}" IsEnabled="{Binding IsEnabled}">
                         <StackPanel Orientation="Horizontal">
                             <fa:ImageAwesome Icon="Briefcase" Style="{StaticResource SideMenuButtonIcon}"/>
                             <Label Content="Documents" Style="{StaticResource SideMenuButtonLabel}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource SideMenuButton}" Command="{Binding ShowAccountTab}" IsEnabled="{Binding IsEnabled}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="ArrowCircleOutlineRight" Style="{StaticResource SideMenuButtonIcon}"/>
+                            <Label Content="Accounts" Style="{StaticResource SideMenuButtonLabel}"/>
                         </StackPanel>
                     </RadioButton>
                 </StackPanel>

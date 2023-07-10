@@ -31,7 +31,7 @@ namespace ShopSystem.MVVM.ViewModel
 
         public string Version
         {
-            get { return "Ver 2.0"; }
+            get { return "Ver 3.0"; }
         }
 
         public bool AppStatus
@@ -50,6 +50,14 @@ namespace ShopSystem.MVVM.ViewModel
             {
                 if (AppStatus) return new SolidColorBrush(Colors.LightGreen);
                 else return new SolidColorBrush(Colors.Red);
+            }
+        }
+
+        public bool IsEnabled
+        {
+            get
+            {
+                return ((int)mainModel.SetAccountType >= 1);
             }
         }
 
@@ -91,16 +99,78 @@ namespace ShopSystem.MVVM.ViewModel
             }
         }
 
+        public AccountTabVM AccountTabViewModel
+        {
+            get
+            {
+                BaseViewModel? viewModel = FindInstanceVM(typeof(AccountTabVM).Name);
+                if (viewModel == null)
+                {
+                    viewModel = new AccountTabVM();
+                    baseViewModels.Add(viewModel);
+                }
+                return viewModel as AccountTabVM;
+            }
+        }
+
+        public LogInTabVM LogInTabViewModel
+        {
+            get
+            {
+                BaseViewModel? viewModel = FindInstanceVM(typeof(LogInTabVM).Name);
+                if (viewModel == null)
+                {
+                    viewModel = new LogInTabVM(this);
+                    baseViewModels.Add(viewModel);
+                }
+                (viewModel as LogInTabVM).Clear.Execute(1);
+                return viewModel as LogInTabVM;
+            }
+        }
+
         #endregion
         #region Commands
 
+        public ICommand CorrectLogIn { get; }
+        public ICommand LogOut { get; }
+        public ICommand ShowLogInTab { get; }
         public ICommand ShowProductTab { get; }
         public ICommand ShowDocumentTab { get; }
+        public ICommand ShowAccountTab { get; }
         public ICommand AddProduct { get; }
         public ICommand AddDocument { get; }
+        public ICommand AddAccount { get; }
+
+        private void ExecuteCorrectLogIn(object parameter)
+        {
+            OnPropertyChanged(nameof(IsEnabled));
+            CurrentChildView = null;
+        }
+
+        private void ExecuteLogOut(object parameter)
+        {
+            mainModel.SetAccount(new Account("NO ACCOUNT", "", AccountType.None));
+            OnPropertyChanged(nameof(IsEnabled));
+            ShowLogInTab.Execute(this);
+        }
+
+        private bool CanExecuteLogOut(object parameter)
+        {
+            return (mainModel.Accounts.Count != 0);
+        }
+
+        private void ExecuteShowLogInTab(object parameter)
+        {
+            if (CurrentChildView != null && CurrentChildView is LogInTabView) return;
+            var view = new LogInTabView();
+            view.DataContext = LogInTabViewModel;
+            CurrentChildView = view;
+        }
 
         private void ExecuteShowProductTab(object parameter)
         {
+            if (!CanExecuteSerwisUser(1)) return;
+
             if (CurrentChildView != null && CurrentChildView is ProductTabView) return;
             var view = new ProductTabView();
             view.DataContext = ProductTabViewModel;
@@ -109,20 +179,56 @@ namespace ShopSystem.MVVM.ViewModel
 
         private void ExecuteShowDocumentTab(object parameter)
         {
+            if (!CanExecuteSerwisUser(1)) return;
+
             if (CurrentChildView != null && CurrentChildView is DocumentTabView) return;
             var view = new DocumentTabView();
             view.DataContext = DocumentTabViewModel;
             CurrentChildView = view;
         }
 
+        private void ExecuteShowAccountTab(object parameter)
+        {
+            if (!CanExecuteAdminUser(1)) return;
+
+            if (CurrentChildView != null && CurrentChildView is AccountTabVM) return;
+            var view = new AccountTabView();
+            view.DataContext = AccountTabViewModel;
+            CurrentChildView = view;
+        }
+
         private void ExecuteAddProduct(object parameter)
         {
+            if (!CanExecuteSerwisUser(1)) return;
+
             ProductTabViewModel.AddProduct.Execute(this);
         }
 
         private void ExecuteAddDocument(object parameter)
         {
+            if (!CanExecuteSerwisUser(1)) return;
+
             DocumentTabViewModel.AddDocument.Execute(this);
+        }
+
+        private void ExecuteAddAccount(object parameter)
+        {
+            if (!CanExecuteAdminUser(1)) return;
+
+            AccountTabViewModel.AddAccount.Execute(this);
+        }
+
+        private bool CanExecuteStandartUser(object parameter)
+        {
+            return ((int)mainModel.SetAccountType >= (int)AccountType.Standart);
+        }
+        private bool CanExecuteSerwisUser(object parameter)
+        {
+            return ((int)mainModel.SetAccountType >= (int)AccountType.Serwis);
+        }
+        private bool CanExecuteAdminUser(object parameter)
+        {
+            return ((int)mainModel.SetAccountType >= (int)AccountType.Admin);
         }
 
         #endregion
@@ -142,11 +248,26 @@ namespace ShopSystem.MVVM.ViewModel
             mainModel = ShopSystemModel.GetInstance();
             AppStatus = true;
 
+            CorrectLogIn = new BaseCommand(ExecuteCorrectLogIn);
+            LogOut = new BaseCommand(ExecuteLogOut, CanExecuteLogOut);
+            ShowLogInTab = new BaseCommand(ExecuteShowLogInTab);
             ShowProductTab = new BaseCommand(ExecuteShowProductTab);
             ShowDocumentTab = new BaseCommand(ExecuteShowDocumentTab);
+            ShowAccountTab = new BaseCommand(ExecuteShowAccountTab);
             AddProduct = new BaseCommand(ExecuteAddProduct);
             AddDocument = new BaseCommand(ExecuteAddDocument);
-            ShowProductTab.Execute(this);
+            AddAccount = new BaseCommand(ExecuteAddAccount);
+            
+            if (mainModel.Accounts.Count == 0)
+            {
+                mainModel.SetAccount(new Account(-1, "DEFAULT", "", AccountType.Admin));
+                ShowProductTab.Execute(this);
+            }
+            else
+            {
+                mainModel.SetAccount(new Account(-1, "NO ACCOUNT", "", AccountType.None));
+                ShowLogInTab.Execute(this);
+            }
         }
     }
 }

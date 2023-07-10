@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 
 namespace ShopSystem.MVVM.Repository
 {
-    class AppRepo : IProductRepo, IDocumentRepo
+    class AppRepo : IProductRepo, IDocumentRepo, IAccountRepo
     {
         private static readonly string productFileName = "Products.json";
         private static readonly string documentFileName = "Documents.json";
+        private static readonly string accountFileName = "Accounts.json";
         private static readonly JsonSerializerOptions _options =
             new() { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, WriteIndented = true };
 
@@ -54,6 +55,26 @@ namespace ShopSystem.MVVM.Repository
         {
             var jsonString = JsonSerializer.Serialize(documents, _options);
             File.WriteAllText(documentFileName, jsonString);
+        }
+
+        #endregion
+        #region IAccountRepo
+
+        public List<Account>? GetAccounts()
+        {
+            if (File.Exists(accountFileName))
+            {
+                var jsonString = File.ReadAllText(accountFileName);
+                List<Account>? accountList = JsonSerializer.Deserialize<List<Account>>(jsonString, _options);
+                return accountList;
+            }
+            else { return null; }
+        }
+
+        public void SetAccounts(List<Account> accounts)
+        {
+            var jsonString = JsonSerializer.Serialize(accounts, _options);
+            File.WriteAllText(accountFileName, jsonString);
         }
 
         #endregion

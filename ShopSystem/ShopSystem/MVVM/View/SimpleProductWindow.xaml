@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ShopSystem.MVVM.View"
         mc:Ignorable="d" Icon="Images/ProductIcon.ico"
-        Title="Add Product To Document" Height="600" Width="450">
+        Title="Add Product To Document" Height="600" Width="450" Background="{StaticResource Asbestos}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="9*"/>
