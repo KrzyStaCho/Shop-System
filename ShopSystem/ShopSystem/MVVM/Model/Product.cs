@@ -52,6 +52,11 @@ namespace ShopSystem.MVVM.Model
             Quantity += quantity;
         }
 
+        public void RemoveQuantity(int quantity)
+        {
+            Quantity -= quantity;
+        }
+
         public static void ResetLastId()
         {
             LastAssignID = -1;

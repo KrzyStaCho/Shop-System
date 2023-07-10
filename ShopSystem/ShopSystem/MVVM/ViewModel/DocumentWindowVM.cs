@@ -272,14 +272,19 @@ namespace ShopSystem.MVVM.ViewModel
 
         #endregion
 
-        public DocumentWindowVM(Document? document = null)
+        public DocumentWindowVM(Company buyerCompany, Document? document = null)
         {
             currentDocument = document;
             if (currentDocument != null)
             {
                 LoadProductPropertiesToFields();
             }
-            else products = new List<SimpleProduct>();
+            else
+            {
+                products = new List<SimpleProduct>();
+                BuyerName = buyerCompany.Name;
+                BuyerNip = buyerCompany.NIP;
+            }
             Status = false;
 
             AddProduct = new BaseCommand(ExecuteAddProduct, CanExecute);

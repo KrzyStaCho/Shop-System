@@ -15,6 +15,7 @@ namespace ShopSystem.MVVM.ViewModel
     {
         #region Private Fields
 
+        private ShopSystemModel mainModel;
         public Account? currentAccount;
         public bool Status;
 
@@ -26,6 +27,7 @@ namespace ShopSystem.MVVM.ViewModel
         private static readonly string EmptyMessage = "cannot be empty";
         private static readonly string NotNumberIntMessage = "isn't a number. Use only number, length must be a 4";
         private static readonly string NotLengthMessage = "must have only 4 digits";
+        private static readonly string NotUniqueMessage = "cannot be name of another exists account";
 
         #endregion
         #region Data Binding
@@ -90,6 +92,11 @@ namespace ShopSystem.MVVM.ViewModel
                 ErrorBox = $"PIN {NotLengthMessage}";
                 return;
             }
+            if (mainModel.Accounts.FirstOrDefault(a => a.Name.Equals(NameBox)) != null)
+            {
+                ErrorBox = $"Username {NotUniqueMessage}";
+                return;
+            }
             ErrorBox = string.Empty;
 
             if (currentAccount == null)
@@ -145,6 +152,7 @@ namespace ShopSystem.MVVM.ViewModel
 
         public AccountWindowVM(Account? account = null)
         {
+            mainModel = ShopSystemModel.GetInstance();
             currentAccount = account;
             if (currentAccount != null)
             {

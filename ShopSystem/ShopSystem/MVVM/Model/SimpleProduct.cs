@@ -12,6 +12,7 @@ namespace ShopSystem.MVVM.Model
         public int Quantity { get; set; }
         public int Vat { get; set; }
         public decimal Brutto { get; set; }
+        public decimal FullBrutto { get; set; }
 
         public SimpleProduct(string name, int quantity,  int vat, decimal brutto)
         {
@@ -19,6 +20,12 @@ namespace ShopSystem.MVVM.Model
             Quantity = quantity;
             Vat = vat;
             Brutto = brutto;
+            FullBrutto = GetFullBrutto(brutto, quantity);
+        }
+
+        public static decimal GetFullBrutto(decimal brutto, int quantity)
+        {
+            return (brutto * quantity);
         }
     }
 }

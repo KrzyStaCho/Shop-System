@@ -1,7 +1,7 @@
 # Shop System
 > Application that help with simple task in the shop job. (Manage Products, Documents, Receipts, Raports)
 
-![Current Version](https://img.shields.io/badge/version-3.0-brightgreen)
+![Current Version](https://img.shields.io/badge/version-4.0-brightgreen)
 
 ## Table of Contents
 * [General Info](#general-information)

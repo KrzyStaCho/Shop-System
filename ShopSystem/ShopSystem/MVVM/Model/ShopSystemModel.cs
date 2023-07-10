@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Windows;
 
 namespace ShopSystem.MVVM.Model
@@ -14,14 +15,17 @@ namespace ShopSystem.MVVM.Model
         private static ShopSystemModel? instance;
         private AppRepo appRepo;
         private Account setAccount;
+        private Company? company;
         private List<Product> products;
         private List<Document> documents;
         private List<Account> accounts;
+        private List<Receipt> receipts;
 
         public ReadOnlyCollection<Product> Products { get { return products.AsReadOnly(); } }
         public ReadOnlyCollection<Document> Documents { get { return documents.AsReadOnly(); } }
         public ReadOnlyCollection<Account> Accounts { get { return accounts.AsReadOnly(); } }
         public AccountType SetAccountType { get { return setAccount.Type; } }
+        public Company? CompanyData { get { return company; } }
 
         #endregion
         #region Functions
@@ -63,6 +67,9 @@ namespace ShopSystem.MVVM.Model
             List<Account> loadedAccounts = appRepo.GetAccounts();
             if (loadedAccounts == null) accounts = new List<Account>();
             else accounts = loadedAccounts;
+
+            //Company
+            company = appRepo.GetCompany();
 
             PostLoadedWork();
         }
@@ -155,12 +162,49 @@ namespace ShopSystem.MVVM.Model
         }
 
         #endregion
+        #region Company Function
+
+        public void SetCompanyData(Company company)
+        {
+            this.company = company;
+            appRepo.SetCompany(company);
+        }
+
+        #endregion
+        #region Receipt Function
+
+        public void AddReceipt(Receipt receipt)
+        {
+            receipts.Add(receipt);
+        }
+        public void AddReceipt(List<SimpleProduct> products)
+        {
+            Receipt receipt = new Receipt(company, products, setAccount.Name);
+            DoReceipt(receipt);
+            receipts.Add(receipt);
+        }
+
+        public void DoReceipt(Receipt receipt)
+        {
+            foreach (SimpleProduct element in receipt.ProductList)
+            {
+                var product = products.FirstOrDefault(p => p.Name == element.Name);
+                if (product != null)
+                {
+                    product.RemoveQuantity(element.Quantity);
+                }
+            }
+            appRepo.SetProducts(products);
+        }
+
+        #endregion
 
         #endregion
 
         private ShopSystemModel()
         {
             appRepo = new AppRepo();
+            receipts = new List<Receipt>();
             LoadDataFromFile();
         }
     }

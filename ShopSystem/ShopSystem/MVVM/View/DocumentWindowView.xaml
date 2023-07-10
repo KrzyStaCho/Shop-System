@@ -71,9 +71,9 @@
                                     <RowDefinition Height="50"/>
                                 </Grid.RowDefinitions>
                                 <Label Grid.Column="0" Grid.Row="0" Content="Company Name:" Style="{StaticResource DocumentFieldLabel}"/>
-                                <TextBox Grid.Column="1" Grid.Row="0" Style="{StaticResource DocumentTextBox}" IsEnabled="{Binding IsEnabled}" Text="{Binding BuyerName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                <TextBox Grid.Column="1" Grid.Row="0" Style="{StaticResource DocumentTextBox}" IsEnabled="False" Text="{Binding BuyerName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 <Label Grid.Column="0" Grid.Row="1" Content="Company NIP:" Style="{StaticResource DocumentFieldLabel}"/>
-                                <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource DocumentTextBox}" IsEnabled="{Binding IsEnabled}" Text="{Binding BuyerNip, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource DocumentTextBox}" IsEnabled="False" Text="{Binding BuyerNip, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                             </Grid>
                         </StackPanel>
                     </Border>
@@ -85,6 +85,7 @@
                             <DataGridTextColumn Header="Quantity" Width="*" Binding="{Binding Quantity}"/>
                             <DataGridTextColumn Header="Vat" Width="*" Binding="{Binding Vat}"/>
                             <DataGridTextColumn Header="Brutto" Width="*" Binding="{Binding Brutto, StringFormat=C}"/>
+                            <DataGridTextColumn Header="Total" Width="*" Binding="{Binding FullBrutto, StringFormat=C}"/>
                             <DataGridTemplateColumn Header="Option" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

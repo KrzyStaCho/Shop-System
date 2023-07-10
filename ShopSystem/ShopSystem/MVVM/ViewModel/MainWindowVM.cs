@@ -31,7 +31,7 @@ namespace ShopSystem.MVVM.ViewModel
 
         public string Version
         {
-            get { return "Ver 3.0"; }
+            get { return "Ver 4.0"; }
         }
 
         public bool AppStatus
@@ -128,6 +128,34 @@ namespace ShopSystem.MVVM.ViewModel
             }
         }
 
+        public CompanyWindowVM CompanyWindowViewModel
+        {
+            get
+            {
+                BaseViewModel? viewModel = FindInstanceVM(typeof(CompanyWindowVM).Name);
+                if (viewModel == null)
+                {
+                    viewModel = new CompanyWindowVM();
+                    baseViewModels.Add(viewModel);
+                }
+                return viewModel as CompanyWindowVM;
+            }
+        }
+
+        public ReceiptTabVM ReceiptTabViewModel
+        {
+            get
+            {
+                BaseViewModel? viewModel = FindInstanceVM(typeof(ReceiptTabVM).Name);
+                if (viewModel == null)
+                {
+                    viewModel = new ReceiptTabVM();
+                    baseViewModels.Add(viewModel);
+                }
+                return viewModel as ReceiptTabVM;
+            }
+        }
+
         #endregion
         #region Commands
 
@@ -136,6 +164,7 @@ namespace ShopSystem.MVVM.ViewModel
         public ICommand ShowLogInTab { get; }
         public ICommand ShowProductTab { get; }
         public ICommand ShowDocumentTab { get; }
+        public ICommand ShowReceiptTab { get; }
         public ICommand ShowAccountTab { get; }
         public ICommand AddProduct { get; }
         public ICommand AddDocument { get; }
@@ -184,6 +213,17 @@ namespace ShopSystem.MVVM.ViewModel
             if (CurrentChildView != null && CurrentChildView is DocumentTabView) return;
             var view = new DocumentTabView();
             view.DataContext = DocumentTabViewModel;
+            CurrentChildView = view;
+        }
+
+        private void ExecuteShowReceiptTab(object parameter)
+        {
+            if (!CanExecuteStandartUser(1)) return;
+            if (mainModel.CompanyData == null) return;
+
+            if (CurrentChildView != null && CurrentChildView is ReceiptTabView) return;
+            var view = new ReceiptTabView();
+            view.DataContext = ReceiptTabViewModel;
             CurrentChildView = view;
         }
 
@@ -240,6 +280,18 @@ namespace ShopSystem.MVVM.ViewModel
             return viewModel;
         }
 
+        private void CheckCompanyData()
+        {
+            if (mainModel.CompanyData == null)
+            {
+                var newWindow = new CompanyWindowView();
+                var viewModel = new CompanyWindowVM();
+                viewModel.RequestClose += () => { newWindow.Close(); };
+                newWindow.DataContext = viewModel;
+                newWindow.ShowDialog();
+            }
+        }
+
         #endregion
 
         public MainWindowVM()
@@ -253,6 +305,7 @@ namespace ShopSystem.MVVM.ViewModel
             ShowLogInTab = new BaseCommand(ExecuteShowLogInTab);
             ShowProductTab = new BaseCommand(ExecuteShowProductTab);
             ShowDocumentTab = new BaseCommand(ExecuteShowDocumentTab);
+            ShowReceiptTab = new BaseCommand(ExecuteShowReceiptTab);
             ShowAccountTab = new BaseCommand(ExecuteShowAccountTab);
             AddProduct = new BaseCommand(ExecuteAddProduct);
             AddDocument = new BaseCommand(ExecuteAddDocument);
@@ -261,13 +314,14 @@ namespace ShopSystem.MVVM.ViewModel
             if (mainModel.Accounts.Count == 0)
             {
                 mainModel.SetAccount(new Account(-1, "DEFAULT", "", AccountType.Admin));
-                ShowProductTab.Execute(this);
             }
             else
             {
                 mainModel.SetAccount(new Account(-1, "NO ACCOUNT", "", AccountType.None));
                 ShowLogInTab.Execute(this);
             }
+
+            CheckCompanyData();
         }
     }
 }

@@ -15,6 +15,7 @@ namespace ShopSystem.MVVM.Repository
         private static readonly string productFileName = "Products.json";
         private static readonly string documentFileName = "Documents.json";
         private static readonly string accountFileName = "Accounts.json";
+        private static readonly string companyFileName = "CompanyData.json";
         private static readonly JsonSerializerOptions _options =
             new() { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, WriteIndented = true };
 
@@ -75,6 +76,26 @@ namespace ShopSystem.MVVM.Repository
         {
             var jsonString = JsonSerializer.Serialize(accounts, _options);
             File.WriteAllText(accountFileName, jsonString);
+        }
+
+        #endregion
+        #region ICompany
+
+        public Company? GetCompany()
+        {
+            if (File.Exists(companyFileName))
+            {
+                var jsonString = File.ReadAllText(companyFileName);
+                Company? company = JsonSerializer.Deserialize<Company>(jsonString, _options);
+                return company;
+            }
+            else { return null; }
+        }
+
+        public void SetCompany(Company company)
+        {
+            var jsonString = JsonSerializer.Serialize(company, _options);
+            File.WriteAllText(companyFileName, jsonString);
         }
 
         #endregion

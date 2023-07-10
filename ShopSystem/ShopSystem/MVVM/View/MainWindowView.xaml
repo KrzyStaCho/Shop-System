@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:viewModel="clr-namespace:ShopSystem.MVVM.ViewModel"
-        xmlns:view="clr-namespace:ShopSystem.MVVM.View"
+        xmlns:view="clr-namespace:ShopSystem.MVVM.View" d:DataContext="{d:DesignInstance Type=viewModel:MainWindowVM}"
         mc:Ignorable="d" Loaded="Window_Loaded" Icon="Images/ProductIcon.ico"
         Title="Shop System" Height="800" Width="1200" Background="{StaticResource Midnight}" WindowStartupLocation="CenterScreen">
     <Grid>
@@ -36,7 +36,7 @@
                         </StackPanel>
                     </Border>
                     <Border Style="{StaticResource DialogWindowBorder}"/>
-                    <RadioButton IsChecked="True" Style="{StaticResource SideMenuButton}" Command="{Binding ShowProductTab}" IsEnabled="{Binding IsEnabled}">
+                    <RadioButton Style="{StaticResource SideMenuButton}" Command="{Binding ShowProductTab}" IsEnabled="{Binding IsEnabled}">
                         <StackPanel Orientation="Horizontal">
                             <fa:ImageAwesome Icon="Book" Style="{StaticResource SideMenuButtonIcon}"/>
                             <Label Content="Products" Style="{StaticResource SideMenuButtonLabel}"/>
@@ -46,6 +46,12 @@
                         <StackPanel Orientation="Horizontal">
                             <fa:ImageAwesome Icon="Briefcase" Style="{StaticResource SideMenuButtonIcon}"/>
                             <Label Content="Documents" Style="{StaticResource SideMenuButtonLabel}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource SideMenuButton}" Command="{Binding ShowReceiptTab}" IsEnabled="{Binding IsEnabled}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="Euro" Style="{StaticResource SideMenuButtonIcon}"/>
+                            <Label Content="Receipts" Style="{StaticResource SideMenuButtonLabel}"/>
                         </StackPanel>
                     </RadioButton>
                     <RadioButton Style="{StaticResource SideMenuButton}" Command="{Binding ShowAccountTab}" IsEnabled="{Binding IsEnabled}">

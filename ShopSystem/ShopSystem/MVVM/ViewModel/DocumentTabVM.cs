@@ -41,8 +41,10 @@ namespace ShopSystem.MVVM.ViewModel
         }
         private void ExecuteAddDocument(object parameter)
         {
+            if (mainModel.CompanyData == null) return;
+
             var newWindow = new DocumentWindowView();
-            var viewModel = new DocumentWindowVM();
+            var viewModel = new DocumentWindowVM(mainModel.CompanyData);
             viewModel.RequestClose += () => { newWindow.Close(); };
             newWindow.DataContext = viewModel;
             newWindow.ShowDialog();
@@ -57,7 +59,7 @@ namespace ShopSystem.MVVM.ViewModel
         {
             var document = parameter as Document;
             var newWindow = new DocumentWindowView();
-            var viewModel = new DocumentWindowVM(document);
+            var viewModel = new DocumentWindowVM(mainModel.CompanyData, document);
             viewModel.RequestClose += () => { newWindow.Close(); };
             newWindow.DataContext = viewModel;
             newWindow.ShowDialog();
