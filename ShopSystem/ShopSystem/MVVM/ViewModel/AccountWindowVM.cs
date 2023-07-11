@@ -92,7 +92,7 @@ namespace ShopSystem.MVVM.ViewModel
                 ErrorBox = $"PIN {NotLengthMessage}";
                 return;
             }
-            if (mainModel.Accounts.FirstOrDefault(a => a.Name.Equals(NameBox)) != null)
+            if (mainModel.Accounts.FirstOrDefault(a => a.Name.Equals(NameBox)) != null && currentAccount == null)
             {
                 ErrorBox = $"Username {NotUniqueMessage}";
                 return;

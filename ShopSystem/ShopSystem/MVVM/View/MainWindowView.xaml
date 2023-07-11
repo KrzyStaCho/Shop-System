@@ -60,6 +60,12 @@
                             <Label Content="Accounts" Style="{StaticResource SideMenuButtonLabel}"/>
                         </StackPanel>
                     </RadioButton>
+                    <RadioButton Style="{StaticResource SideMenuButton}" Command="{Binding ShowRaportTab}" IsEnabled="{Binding IsEnabled}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="FolderOpen" Style="{StaticResource SideMenuButtonIcon}"/>
+                            <Label Content="Raport" Style="{StaticResource SideMenuButtonLabel}"/>
+                        </StackPanel>
+                    </RadioButton>
                 </StackPanel>
             </Border>
             <!-- Content -->

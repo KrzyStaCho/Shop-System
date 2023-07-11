@@ -31,7 +31,7 @@ namespace ShopSystem.MVVM.ViewModel
 
         public string Version
         {
-            get { return "Ver 4.0"; }
+            get { return "Ver 5.0"; }
         }
 
         public bool AppStatus
@@ -156,6 +156,20 @@ namespace ShopSystem.MVVM.ViewModel
             }
         }
 
+        public RaportTabVM RaportTabViewModel
+        {
+            get
+            {
+                BaseViewModel? viewModel = FindInstanceVM(typeof(RaportTabVM).Name);
+                if (viewModel == null)
+                {
+                    viewModel = new RaportTabVM();
+                    baseViewModels.Add(viewModel);
+                }
+                return viewModel as RaportTabVM;
+            }
+        }
+
         #endregion
         #region Commands
 
@@ -166,6 +180,7 @@ namespace ShopSystem.MVVM.ViewModel
         public ICommand ShowDocumentTab { get; }
         public ICommand ShowReceiptTab { get; }
         public ICommand ShowAccountTab { get; }
+        public ICommand ShowRaportTab { get; }
         public ICommand AddProduct { get; }
         public ICommand AddDocument { get; }
         public ICommand AddAccount { get; }
@@ -231,9 +246,19 @@ namespace ShopSystem.MVVM.ViewModel
         {
             if (!CanExecuteAdminUser(1)) return;
 
-            if (CurrentChildView != null && CurrentChildView is AccountTabVM) return;
+            if (CurrentChildView != null && CurrentChildView is AccountTabView) return;
             var view = new AccountTabView();
             view.DataContext = AccountTabViewModel;
+            CurrentChildView = view;
+        }
+
+        private void ExecuteShowRaportTab(object parameter)
+        {
+            if (!CanExecuteSerwisUser(1)) return;
+
+            if (CurrentChildView != null && CurrentChildView is RaportTabView) return;
+            var view = new RaportTabView();
+            view.DataContext = RaportTabViewModel;
             CurrentChildView = view;
         }
 
@@ -307,6 +332,7 @@ namespace ShopSystem.MVVM.ViewModel
             ShowDocumentTab = new BaseCommand(ExecuteShowDocumentTab);
             ShowReceiptTab = new BaseCommand(ExecuteShowReceiptTab);
             ShowAccountTab = new BaseCommand(ExecuteShowAccountTab);
+            ShowRaportTab = new BaseCommand(ExecuteShowRaportTab);
             AddProduct = new BaseCommand(ExecuteAddProduct);
             AddDocument = new BaseCommand(ExecuteAddDocument);
             AddAccount = new BaseCommand(ExecuteAddAccount);

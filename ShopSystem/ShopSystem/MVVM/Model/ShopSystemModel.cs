@@ -24,6 +24,8 @@ namespace ShopSystem.MVVM.Model
         public ReadOnlyCollection<Product> Products { get { return products.AsReadOnly(); } }
         public ReadOnlyCollection<Document> Documents { get { return documents.AsReadOnly(); } }
         public ReadOnlyCollection<Account> Accounts { get { return accounts.AsReadOnly(); } }
+        public List<Receipt> Receipts { get { return  receipts; } }
+        public List<string> AccountsName { get { return accounts.Select(a => a.Name).ToList(); } }
         public AccountType SetAccountType { get { return setAccount.Type; } }
         public Company? CompanyData { get { return company; } }
 

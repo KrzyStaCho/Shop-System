@@ -1,7 +1,7 @@
 # Shop System
-> Application that help with simple task in the shop job. (Manage Products, Documents, Receipts, Raports)
+> Application that help with simple task in the shop job. (Manage Products, Documents, Receipts, Raports, Accounts)
 
-![Current Version](https://img.shields.io/badge/version-4.0-brightgreen)
+![Current Version](https://img.shields.io/badge/version-5.0-brightgreen)
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -34,18 +34,19 @@ List the features here:
 
 
 ## Screenshots
-![First Version - Application View](/Images/AppView1.0.png)
-![First Version - Edit Product View](/Images/EditProductView1.0.png)
-![Second Version - Document Tab](/Images/DocumentsView2.0.png)
-![Second Version - Show Document](/Images/ShowDocument2.0.png)
-![Third Version - Add Account](/Images/AddAccount3.0.png)
+![ProductView](/Images/ProductView.png)
+![DocumentView](/Images/DocumentView.png)
+![ReceiptView](/Images/ReceiptView.png)
+![AccountView](/Images/AccountView.png)
+![RaportView](/Images/RaportView.png)
+![LoginView](/Images/LoginView.png)
 
 ## Setup
 - Requirements: .NET 6.0
 
 
 ## Project Status
-Project is: _in progress_
+Project is: _complete_
 
 
 ## Room for Improvement
